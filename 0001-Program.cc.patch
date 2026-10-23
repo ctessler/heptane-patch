@@ -1,0 +1,33 @@
+From 49f47785360f04e927e74011ccbfe3e7652f2a4d Mon Sep 17 00:00:00 2001
+From: "C. Tessler" <corey.tessler@unlv.edu>
+Date: Tue, 20 Oct 2026 08:05:31 -0700
+Subject: [PATCH 1/2] Program.cc
+
+Fix warning -Werror=unused-but-set-variable=, which aborts compilation
+with gcc 16.2.1
+---
+ src/Common/cfglib/src/Program.cc | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/Common/cfglib/src/Program.cc b/src/Common/cfglib/src/Program.cc
+index 3695e3b..87553c5 100755
+--- a/src/Common/cfglib/src/Program.cc
++++ b/src/Common/cfglib/src/Program.cc
+@@ -169,13 +169,12 @@ namespace cfglib {
+   {
+     os << "<!DOCTYPE PROGRAM SYSTEM 'cfglib.dtd'>" << std::endl;
+     os << "<PROGRAM " << "  id =\"" << hand.identify(this) << "\" " << "  name=\"" << this->name << "\" " << "  entry=\"" << hand.identify(this->entry_point) << "\" " << ">" << std::endl;
+-    int i = 0;
++
+     for (listOfCfg::const_iterator it = this->cfgs_list.begin(); it != this->cfgs_list.end(); it++)
+       {
+ 	std::ostringstream id;
+ 	id << hand.identify(*it);
+ 	(*it)->WriteXml(os, hand);
+-	i++;
+       }
+ 
+     this->WriteXmlAttributes(os, hand);
+-- 
+2.55.0
+

@@ -1,0 +1,40 @@
+From 6305f18d9c89a21549f7c15a325480c91f15bc74 Mon Sep 17 00:00:00 2001
+From: "C. Tessler" <corey.tessler@unlv.edu>
+Date: Tue, 20 Oct 2026 08:05:49 -0700
+Subject: [PATCH 2/2] AnalysisHelper.cc
+
+Fix warning -Werror=unused-but-set-variable=, which aborts compilation
+with gcc 16.2.1
+---
+ src/HeptaneAnalysis/src/Generic/AnalysisHelper.cc | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/HeptaneAnalysis/src/Generic/AnalysisHelper.cc b/src/HeptaneAnalysis/src/Generic/AnalysisHelper.cc
+index c18015c..96406dd 100755
+--- a/src/HeptaneAnalysis/src/Generic/AnalysisHelper.cc
++++ b/src/HeptaneAnalysis/src/Generic/AnalysisHelper.cc
+@@ -74,11 +74,9 @@ bool AnalysisHelper::applyToAllNodesRecursive(Program * p, t_node_function f, vo
+      on nodes (methods applyToAllCfgNodes and applyToAllNodesRecursive).
+      ncalls is the total number of function calls, ntrue is the number of
+      calls returning true */
+-  int ncalls, ntrue;
+   bool res = true;
+ 
+   NonSerialisableIntegerAttribute visited(1);
+-  ncalls = ntrue = 0;
+ 
+   Cfg *c = config->getEntryPoint();
+   assert(c != NULL);
+@@ -122,8 +120,7 @@ bool AnalysisHelper::applyToAllNodesRecursive(Program * p, t_node_function f, vo
+ 	}
+ 
+       // Call function f
+-      ncalls++;
+-      if ((*f) (c, n, param) == false) res = false; else ntrue++;
++      if ((*f) (c, n, param) == false) res = false;
+ 
+       // Erase just treated element
+       vn.erase(vn.begin());
+-- 
+2.55.0
+
